@@ -1,6 +1,6 @@
 package com.sda.auction.controller;
 
-import com.sda.auction.Service.UserService;
+import com.sda.auction.service.UserService;
 import com.sda.auction.dto.UserDto;
 import com.sda.auction.validator.UserDtoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class Registration {
     public ResponseEntity<UserDto> post(@Valid @RequestBody UserDto userDto) {
         userDtoValidator.validate(userDto);
 
-
+ 
         UserDto userDtoResult = userService.addUser(userDto);
         return new ResponseEntity<>(userDtoResult, HttpStatus.OK);
     }

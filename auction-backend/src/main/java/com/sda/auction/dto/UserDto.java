@@ -21,23 +21,23 @@ public class UserDto {
     @Pattern(regexp = "[A-Za-z]+", message = "{error.user.firstName.pattern}")
     private String firstName;
 
-    @NotEmpty(message = "Please insert your last name")
-    @Pattern(regexp = "[A-Za-z]+", message = "Letters only!")
+    @NotEmpty(message = "{error.user.lastName.notEmpty}")
+    @Pattern(regexp = "[A-Za-z]+", message = "{error.user.lastName.pattern}")
     private String lastName;
 
     @NotEmpty(message = "{error.user.email.notEmpty}")
     @Email(message = "{error.user.email.regex}")//acelasi ca si in message.properties
     private String email;
 
-    @NotEmpty(message = "Please insert your password")
-    @Pattern(regexp = "((.*)[A-Z]+(.*))",message = "Password should contain at least one capital letter!")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @NotEmpty(message = "{error.user.password.notEmpty}")
+    @Pattern(regexp = "((.*)[A-Z]+(.*))",message = "{error.user.password.pattern}")
+    @Size(min = 6, message = "{error.user.password.size}")
     private String password;
 
 
-    @NotEmpty(message = "PLease insert your confirm password")
-    @Pattern(regexp = "((.*)[A-Z]+(.*))",message = "Password should contain at least one capital letter!")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @NotEmpty(message = "{error.user.confirmPassword.notEmpty}")
+    @Pattern(regexp = "((.*)[A-Z]+(.*))",message = "{error.user.confirmPassword.pattern}")
+    @Size(min = 6, message = "error.user.confirmPassword.size")
     private String confirmPassword;
 
 }

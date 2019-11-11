@@ -1,4 +1,4 @@
-package com.sda.auction.Service;
+package com.sda.auction.service;
 
 import com.sda.auction.dto.UserDto;
 import com.sda.auction.model.User;

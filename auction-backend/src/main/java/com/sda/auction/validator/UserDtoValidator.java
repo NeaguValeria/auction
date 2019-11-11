@@ -1,14 +1,10 @@
 package com.sda.auction.validator;
 
-import com.sda.auction.Service.UserService;
+import com.sda.auction.service.UserService;
 import com.sda.auction.dto.UserDto;
 import com.sda.auction.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.GeneratedValue;
 
 @Component
 public class UserDtoValidator {

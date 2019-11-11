@@ -1,6 +1,6 @@
-package com.sda.auction.Service.impl;
+package com.sda.auction.service.impl;
 
-import com.sda.auction.Service.UserService;
+import com.sda.auction.service.UserService;
 import com.sda.auction.dto.UserDto;
 import com.sda.auction.mapper.UserMapper;
 import com.sda.auction.model.User;
