@@ -1,7 +1,7 @@
 package com.sda.auction.controller;
 
+import com.sda.auction.dto.LoginDto;
 import com.sda.auction.service.UserService;
-import com.sda.auction.dto.UserDto;
 import com.sda.auction.validator.UserDtoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/register")
-public class Registration {
+@RequestMapping("/api/login")
+public class Login {
 
     @Autowired
     private UserService userService;
@@ -25,12 +25,10 @@ public class Registration {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<UserDto> post(@Valid @RequestBody UserDto userDto) {
-        userDtoValidator.validate(userDto);
-        UserDto userDtoResult = userService.addUser(userDto);
-        return new ResponseEntity<>(userDtoResult, HttpStatus.OK);
+    public ResponseEntity<LoginDto> post(@Valid @RequestBody LoginDto loginDto) {
+        LoginDto loginDtoResult = userService.login(loginDto);
+        return new ResponseEntity<>(loginDtoResult, HttpStatus.OK);
     }
 
 
 }
-

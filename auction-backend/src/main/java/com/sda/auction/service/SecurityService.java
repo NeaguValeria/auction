@@ -4,11 +4,11 @@ import com.sda.auction.dto.LoginDto;
 import com.sda.auction.dto.UserDto;
 import com.sda.auction.model.User;
 
-public interface UserService {
+public interface SecurityService {
 
-    UserDto addUser (UserDto userDto);
 
-    User findByEmail(String email);
+    boolean passwordMatch(LoginDto userDto, User user);
 
-    LoginDto login(LoginDto loginDto);
+    LoginDto createDtoWithJwt(User user);
 }
+

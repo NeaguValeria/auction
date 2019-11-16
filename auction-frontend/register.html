@@ -23,6 +23,11 @@
             padding-left: 12px;
             font-size: 14px;
         }
+        form#register_form p.success {
+            color: green;
+        }
+
+
     </style>
 </head>
 <body>
@@ -35,8 +40,8 @@
                 <div class="login_box_img">
                     <div class="hover">
                         <h4>Already have an account?</h4>
-                        <p>There are advances being made in science and technology everyday, and a good example of this
-                            is the</p>
+                        <p>There are advances being made in science and technology everyday, and a good example
+                            of this is the</p>
                         <a class="button button-account" href="login.html">Login Now</a>
                     </div>
                 </div>
@@ -56,16 +61,18 @@
                             <input type="text" class="form-control" id="lastName" name="lastName"
                                    placeholder="Last name" onfocus="this.placeholder = ''"
                                    onblur="this.placeholder = 'Last name'">
-
                         </div>
 
+
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="email" name="email" placeholder="Email Address"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
+                            <input type="text" class="form-control" id="email" name="email"
+                                   placeholder="Email Address" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Email Address'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="password" name="password" placeholder="Password"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                            <input type="text" class="form-control" id="password" name="password"
+                                   placeholder="Password" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Password'">
                         </div>
                         <div class="col-md-12 form-group">
                             <input type="text" class="form-control" id="confirmPassword" name="confirmPassword"
@@ -79,7 +86,11 @@
                             </div>
                         </div>
                         <div class="col-md-12 form-group">
-                            <button type="button" value="submit" class="button button-register w-100">Register</button>
+                            <button type="button" value="submit" class="button button-register w-100">Register
+                            </button>
+                        </div>
+                        <div class="col-md-12 form-group registerSuccessful">
+
                         </div>
                     </form>
                 </div>
@@ -100,6 +111,5 @@
 <script src="resources/js/main.js"></script>
 
 <script src="resources/js/register.js"></script>
-
 </body>
 </html>
