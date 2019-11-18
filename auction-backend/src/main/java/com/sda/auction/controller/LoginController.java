@@ -7,25 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/login")
-public class Login {
+public class LoginController {
 
     @Autowired
     private UserService userService;
     @Autowired
     private UserDtoValidator userDtoValidator;
 
+
     @GetMapping
     public ResponseEntity<String> get() {
-        return new ResponseEntity<>("ceva", HttpStatus.OK);
+        return new ResponseEntity<>("hello world", HttpStatus.OK);
     }
+
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<LoginDto> post(@Valid @RequestBody LoginDto loginDto) {
+
         LoginDto loginDtoResult = userService.login(loginDto);
         return new ResponseEntity<>(loginDtoResult, HttpStatus.OK);
     }

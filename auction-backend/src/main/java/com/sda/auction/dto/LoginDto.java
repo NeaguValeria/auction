@@ -17,7 +17,7 @@ public class LoginDto {
     private String jwt;
 
     @NotEmpty(message = "{error.user.email.notEmpty}")
-    @Email(message = "{error.user.email.regex}")//acelasi ca si in message.properties
+    @Email(message = "{error.user.email.regex}")
     private String email;
 
     @NotEmpty(message = "{error.user.password.notEmpty}")

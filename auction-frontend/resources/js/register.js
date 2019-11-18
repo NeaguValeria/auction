@@ -16,7 +16,7 @@ function register() {
     const password = $("form#register_form input#password").val();
     const confirmPassword = $("form#register_form input#confirmPassword").val();
 
-    const userDto = JSON.stringify({firstName, lastName, email, password, confirmPassword});
+    const userDto = JSON.stringify({ firstName, lastName, email, password, confirmPassword });
 
     $.ajax({
         url: 'http://localhost:8080/api/register',
@@ -60,22 +60,21 @@ function register() {
 }
 
 
-function validateUsername(element) {
+function validateUsername(element){
     var firstName = $(element).val();
-    if (firstName.length < 6) {
-        if (!$(element).next().hasClass("error")) {
+    if(firstName.length<6){
+        if (! $(element).next().hasClass("error")) {
             const errorLine = errorLineStart + "First name not valid" + errorLineEnd;
             $(errorLine).insertAfter(element);
         }
     }
 }
-
 $(document).ready(function () {
     $("form#register_form button").click(function () {
         register();
     });
 
-    $("#firstName").focusout(function () {
+    $("#firstName").focusout(function(){
         validateUsername(this);
     });
 
