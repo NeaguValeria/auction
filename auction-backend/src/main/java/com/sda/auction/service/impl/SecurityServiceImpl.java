@@ -23,9 +23,9 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public boolean passwordMatch(LoginDto userDto, User user) {
         String plaintextPassword = userDto.getPassword();
-        String hashedPassord = user.getPassword();
+        String hashedPassword = user.getPassword();
 
-        return passwordEncoder.matches(plaintextPassword, hashedPassord);
+        return passwordEncoder.matches(plaintextPassword, hashedPassword);
     }
 
     @Override

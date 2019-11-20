@@ -1,8 +1,24 @@
 package com.sda.auction.model;
-import lombok.Data;
-import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Table(name = "item")
@@ -21,9 +37,10 @@ public class Item {
     @Column
     private int startingPrice;
     @Column
-    private Data startDate;
+    private Date startDate;
     @Column
-    private Data endDate;
+    private Date endDate;
+
     @Column
     private String category;
 
@@ -31,6 +48,14 @@ public class Item {
     @JoinColumn(name = "user_id")
     private User owner;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item",cascade = CascadeType.ALL)
     private Set<Bid> bids = new HashSet<>();
+
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@JoinTable(name = "user_role",
+//			joinColumns = @JoinColumn(name = "user_id"),
+//			inverseJoinColumns = @JoinColumn(name = "role_id"))
+//	private Set<Role> roles = new HashSet<>();
+
+
 }
