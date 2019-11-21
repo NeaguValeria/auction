@@ -51,7 +51,7 @@ public class SecurityServiceImpl implements SecurityService {
         //ii dau jwt si adresa unde vrea s mearga request url
 
         boolean result = tokenProvider.validate(jwt, requestURL);
-        if (result) {
+        if (jwt != null && result) {
             String ownerEmail = tokenProvider.getEmailFrom(jwt);
             httpServletRequest.setAttribute("ownerEmail", ownerEmail);
         }

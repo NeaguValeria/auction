@@ -13,6 +13,7 @@ import java.util.Set;
 @Table(name = "user")
 @Data
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -33,13 +34,19 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<Item> items = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Bid> bids = new HashSet<>();
+
     public void addRole(Role role) {
         roles.add(role);
     }
 
     public List<String> getRolesAsStrings() {
         List<String> result = new ArrayList<>();
-        for(Role role: roles){
+        for (Role role : roles) {
             result.add(role.getRoleName());
         }
         return result;
