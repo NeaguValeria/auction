@@ -14,7 +14,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(1)
+@Order(2)
 public class SecurityFilter implements Filter {
 
     @Autowired
@@ -30,7 +30,10 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
+
         if (securityService.isValid(servletRequest)) {
+
+            securityService.setEmailOn(servletRequest);
 
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
@@ -40,5 +43,6 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void destroy() {
+
     }
 }

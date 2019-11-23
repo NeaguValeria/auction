@@ -20,54 +20,60 @@
 <body>
 
 <!--================Login Box Area =================-->
-<section class="login_box_area section-margin">
+<section class="addItem_box_area section-margin">
     <div class="container">
         <div class="row">
 
-            <div class="col-lg-6">
+            <div class="col-lg-6 main-div">
                 <div class="login_form_inner register_form_inner">
-                    <h3>Item Form </h3>
-                    <form class="row login_form" action="#/" id="register_form">
+                    <h3>Add an item to auction</h3>
+                    <form class="row login_form" action="#/" id="addItem_form">
 
                         <div class="col-md-12 form-group">
                             <input type="text" class="form-control" id="name" name="name"
-                                   placeholder="Item name" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Item name'">
+                                   placeholder="Name" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Name'">
                         </div>
 
                         <div class="col-md-12 form-group">
                             <input type="text" class="form-control" id="description" name="description"
-                                   placeholder="Item description" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Item description'">
+                                   placeholder="Description" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Description'">
                         </div>
 
 
-                        <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="startingPrice" name="startingPrice"
-                                   placeholder="Please insert starting price" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Please insert starting price'">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="startDate" name="startDate"
-                                   placeholder="Please insert start Date" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Please insert start Date'">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="endDate" name="endDate"
-                                   placeholder="Please insert end Date" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Please insert end Date'">
-                        </div>
                         <div class="col-md-12 form-group">
                             <input type="text" class="form-control" id="category" name="category"
-                                   placeholder="Please insert item category" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Please insert item category'">
+                                   placeholder="Category" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Category'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="number" min="0" class="form-control" id="startingPrice" name="startingPrice"
+                                   placeholder="Starting price" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Starting price'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="date" class="form-control" id="startDate" name="startDate"
+                                   placeholder="Start date" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Start date'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="date" class="form-control" id="endDate" name="endDate"
+                                   placeholder="End date" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'End date'">
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <input type="file" class="form-control" id="photo" name="photo"
+                                   placeholder="Photo" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Photo'">
                         </div>
 
                         <div class="col-md-12 form-group">
                             <button type="button" value="submit" class="button button-register w-100">Add item
                             </button>
                         </div>
-                        <div class="col-md-12 form-group registerSuccessful">
+                        <div class="col-md-12 form-group addSuccessful">
 
                         </div>
                     </form>
@@ -88,7 +94,6 @@
 <script src="resources/vendors/mail-script.js"></script>
 <script src="resources/js/main.js"></script>
 
-<script src="resources/js/item.js"></script>
+<script src="resources/js/addItem.js"></script>
 </body>
 </html>
-

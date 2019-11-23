@@ -18,7 +18,6 @@ public class LoginController {
     @Autowired
     private UserDtoValidator userDtoValidator;
 
-
     @GetMapping
     public ResponseEntity<String> get() {
         return new ResponseEntity<>("hello world", HttpStatus.OK);
@@ -31,6 +30,5 @@ public class LoginController {
         LoginDto loginDtoResult = userService.login(loginDto);
         return new ResponseEntity<>(loginDtoResult, HttpStatus.OK);
     }
-
 
 }

@@ -7,16 +7,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserMapper {
 
-    public User convert(UserDto userDto){
+    public User convert(UserDto userDto) {
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        return  user;
+        return user;
     }
 
-    public UserDto convert (User user){
+    public UserDto convert(User user) {
+
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
@@ -24,6 +25,7 @@ public class UserMapper {
         userDto.setLastName(user.getLastName());
 
         userDto.setId(user.getId());
+
         return userDto;
     }
 }

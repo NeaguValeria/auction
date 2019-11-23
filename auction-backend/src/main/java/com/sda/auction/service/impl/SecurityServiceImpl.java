@@ -1,14 +1,17 @@
 package com.sda.auction.service.impl;
+
 import com.sda.auction.dto.LoginDto;
 import com.sda.auction.jwt.TokenProvider;
 import com.sda.auction.model.User;
 import com.sda.auction.service.SecurityService;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class SecurityServiceImpl implements SecurityService {
@@ -19,6 +22,9 @@ public class SecurityServiceImpl implements SecurityService {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private TokenProvider tokenProvider;
+
+    @Value("${jwt.role.public}")
+    private String publicPaths;
 
     @Override
     public boolean passwordMatch(LoginDto userDto, User user) {
@@ -37,25 +43,40 @@ public class SecurityServiceImpl implements SecurityService {
 
         String jwt = tokenProvider.createJwt(user);
         result.setJwt(jwt);
+
         return result;
     }
 
     @Override
     public boolean isValid(ServletRequest servletRequest) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        // ne interesaza aici jwt si npointu unde vrea s mearga
 
         String requestURL = httpServletRequest.getRequestURI();
-        //ia tokenu depe request (jwt), extrag de pe request
-        String jwt = resolveToken(httpServletRequest);
-        //ii dau jwt si adresa unde vrea s mearga request url
-
-        boolean result = tokenProvider.validate(jwt, requestURL);
-        if (jwt != null && result) {
-            String ownerEmail = tokenProvider.getEmailFrom(jwt);
-            httpServletRequest.setAttribute("ownerEmail", ownerEmail);
+        if (isPublicPath(requestURL)) {
+            return true;
         }
-        return result;
+        String jwt = resolveToken(httpServletRequest);
+        return tokenProvider.validate(jwt, requestURL);
+    }
+
+
+    private boolean isPublicPath(String requestURL) {
+        String[] publicPathsArray = publicPaths.split(",");
+        for (String path : publicPathsArray) {
+            if (requestURL.compareTo(path) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void setEmailOn(ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String jwt = resolveToken(httpServletRequest);
+
+        String userEmail = tokenProvider.getEmailFrom(jwt);
+        httpServletRequest.setAttribute("userEmail", userEmail);
     }
 
     //	"Bearer adsadsafisafsakjskjdsa.sadjsaksaksajk.sakjddsakdsakdsa"
@@ -68,3 +89,4 @@ public class SecurityServiceImpl implements SecurityService {
 
     }
 }
+

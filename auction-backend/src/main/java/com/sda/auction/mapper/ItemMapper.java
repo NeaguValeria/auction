@@ -6,6 +6,7 @@ import com.sda.auction.model.Item;
 import com.sda.auction.model.User;
 import com.sda.auction.util.DateConverter;
 import java.text.ParseException;
+import java.util.Base64;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class ItemMapper {
         Date endDate = dateConverter.parse(itemDto.getEndDate());
         item.setEndDate(endDate);
 
+        String photo = Base64.getEncoder().encodeToString(itemDto.getPhoto().getBytes());
+        item.setPhoto(photo);
+
         return item;
     }
 
@@ -46,6 +50,9 @@ public class ItemMapper {
         itemDto.setEndDate(endDate);
 
         itemDto.setId(item.getId());
+
+        String photo = new String(Base64.getDecoder().decode(item.getPhoto().getBytes()));
+        itemDto.setPhoto(photo);
 
         return itemDto;
     }

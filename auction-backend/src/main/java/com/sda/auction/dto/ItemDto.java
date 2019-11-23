@@ -8,29 +8,32 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data
 @EqualsAndHashCode
+@Data
 public class ItemDto {
 
-    private int id;
-    @NotEmpty(message = "{error.item.name.notEmpty}")
-    @Pattern(regexp = "[A-Za-z]+", message = "{error.item.name.pattern}")
+    private Integer id;
+
+    @NotEmpty(message = "Please insert item's name")
+    @Pattern(regexp = "[A-Za-z ]+", message = "Letters and spaces only!")
     private String name;
 
-    @NotEmpty(message = "{error.item.description.notEmpty}")
+    @NotEmpty(message = "Please insert item's description")
     private String description;
 
     @Positive
-    @NotEmpty(message = "{error.item.startingPrice.notEmpty}")
     private int startingPrice;
 
-    @NotEmpty(message = "{error.item.startDate.notEmpty}")
+    @NotEmpty
+    private String category;
+
+    @NotEmpty
     private String startDate;
 
-    @NotEmpty(message = "{error.item.endDate.notEmpty}")
+    @NotEmpty
     private String endDate;
 
-    @NotEmpty(message = "{error.item.category.notEmpty}")
-    private String category;
+    @NotEmpty
+    private String photo;
 
 }
