@@ -134,12 +134,39 @@ function register() {
 
 }
 
+function setHeaderForUser() {
+    $.ajax({
+        url: 'http://localhost:8080/api/authenticated/details',
+        dataType: 'json',
+        headers: createAuthorizationHeader(),
+        type: 'get',
+        contentType: 'application/json',
+        success: function (headerDto, textStatus, jQxhr) {
+            console.log(headerDto);
+            $(".helloMessage").text("Hello, " + headerDto.firstName + "!");
+            if (headerDto.admin) {
+                $("li.nav-item.adminOnly").show();
+            } else {
+                $("li.nav-item.userOnly").show();
+            }
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            console.log(jqXhr);
+        }
+    });
+}
+
 $(document).ready(function () {
-    $("form#addItem_form button").click(function () {
-        addItem();
+    setHeaderForUser();
+    $(".button.logout").click(function () {
+        localStorage.jwt = "";
+        window.location.href = "login.html";
     });
-    $("form#addItem_form input#photo").change(function () {
-        loadImageAsBase64();
-    });
+    // $("form#addItem_form button").click(function () {
+    //   addItem();
+    // });
+    // $("form#addItem_form input#photo").change(function () {
+    //   loadImageAsBase64();
+    // });
 
 });

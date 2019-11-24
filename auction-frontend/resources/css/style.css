@@ -16,3 +16,11 @@ form#login_form p.success {
 section.addItem_box_area .main-div{
     margin: 0 auto;
 }
+.helloMessage{
+    padding-left: 5px;
+}
+
+li.nav-item.userOnly,
+li.nav-item.adminOnly{
+    display: none;
+}

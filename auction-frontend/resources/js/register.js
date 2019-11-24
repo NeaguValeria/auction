@@ -7,11 +7,15 @@ const successLineEnd = "</p>";
 function register() {
 
     $("form#register_form .error").remove();
+
     const firstName = $("form#register_form input#firstName").val();
+
     const lastName = $("form#register_form input#lastName").val();
+
     const email = $("form#register_form input#email").val();
     const password = $("form#register_form input#password").val();
     const confirmPassword = $("form#register_form input#confirmPassword").val();
+
     const userDto = JSON.stringify({ firstName, lastName, email, password, confirmPassword });
 
     $.ajax({
@@ -75,6 +79,3 @@ $(document).ready(function () {
     });
 
 });
-
-
-

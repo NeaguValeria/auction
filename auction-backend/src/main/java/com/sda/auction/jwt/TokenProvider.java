@@ -1,5 +1,7 @@
 package com.sda.auction.jwt;
 
+import com.sda.auction.dto.HeaderDto;
+import com.sda.auction.mapper.HeaderMapper;
 import com.sda.auction.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -32,11 +35,15 @@ public class TokenProvider implements InitializingBean {
     @Value("${jwt.role.user.protected}")
     private String userProtectedPaths;
 
+    @Autowired
+    private HeaderMapper headerMapper;
+
     @Override
     public void afterPropertiesSet() throws Exception {
         byte[] keyBytes = Decoders.BASE64.decode(serverSecret);
         signingKey = new SecretKeySpec(keyBytes, signatureAlgorithm.getJcaName());
     }
+
 
     public String createJwt(User user) {
         return Jwts.builder()
@@ -116,5 +123,15 @@ public class TokenProvider implements InitializingBean {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public HeaderDto getHeaderDtoFrom(String jwt) {
+        Claims claim = Jwts.parser()
+                .setSigningKey(signingKey)
+                .parseClaimsJws(jwt)
+                .getBody();
+        System.out.println(claim);
+
+        return headerMapper.convert(claim);
     }
 }
