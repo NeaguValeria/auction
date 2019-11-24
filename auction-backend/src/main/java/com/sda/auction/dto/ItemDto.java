@@ -1,12 +1,11 @@
 package com.sda.auction.dto;
 
-import javax.validation.constraints.Email;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 @Data
@@ -36,4 +35,9 @@ public class ItemDto {
     @NotEmpty
     private String photo;
 
+    private String owner;
+
+    public void resetOwner() {
+        owner = null;
+    }
 }

@@ -3,8 +3,13 @@ package com.sda.auction.service.impl;
 import com.sda.auction.dto.HeaderDto;
 import com.sda.auction.dto.LoginDto;
 import com.sda.auction.jwt.TokenProvider;
+import com.sda.auction.model.Role;
 import com.sda.auction.model.User;
+import com.sda.auction.repository.RoleRepository;
+import com.sda.auction.repository.UserRepository;
 import com.sda.auction.service.SecurityService;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,9 +28,13 @@ public class SecurityServiceImpl implements SecurityService {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private TokenProvider tokenProvider;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Value("${jwt.role.public}")
     private String publicPaths;
+    @Value("${jwt.admin.suffixes}")
+    private String adminSuffixes;
 
     @Override
     public boolean passwordMatch(LoginDto userDto, User user) {
@@ -85,6 +94,26 @@ public class SecurityServiceImpl implements SecurityService {
         String jwt = resolveToken(request);
         return tokenProvider.getHeaderDtoFrom(jwt);
     }
+
+
+    @Override
+    public void addUserRoles(User user) {
+        List<String> adminSuffixesArray = Arrays.asList(adminSuffixes.split(","));
+        String userEmailAddress = user.getEmail();
+
+        for (String suffix : adminSuffixesArray) {
+            if (userEmailAddress.endsWith(suffix)) {
+                Role admin = roleRepository.findByRoleName("admin");
+                user.addRole(admin);
+                return;
+            }
+        }
+        // nu s-a iesit din metoda cu return, inseamna ca nu s-a atribuit admin
+        //default: ii dam user
+        Role role = roleRepository.findByRoleName("user");
+        user.addRole(role);
+    }
+
 
     //	"Bearer adsadsafisafsakjskjdsa.sadjsaksaksajk.sakjddsakdsakdsa"
     private String resolveToken(HttpServletRequest httpServletRequest) {

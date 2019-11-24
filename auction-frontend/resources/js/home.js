@@ -134,6 +134,23 @@ function register() {
 
 }
 
+function getAllItemsForAdmin() {
+    $.ajax({
+        url: 'http://localhost:8080/api/admin/item',
+        dataType: 'json',
+        headers: createAuthorizationHeader(),
+        type: 'get',
+        contentType: 'application/json',
+        success: function (itemList, textStatus, jQxhr) {
+            console.log(itemList);
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            console.log(jqXhr);
+        }
+    });
+}
+
+
 function setHeaderForUser() {
     $.ajax({
         url: 'http://localhost:8080/api/authenticated/details',
@@ -146,6 +163,7 @@ function setHeaderForUser() {
             $(".helloMessage").text("Hello, " + headerDto.firstName + "!");
             if (headerDto.admin) {
                 $("li.nav-item.adminOnly").show();
+                getAllItemsForAdmin();
             } else {
                 $("li.nav-item.userOnly").show();
             }
@@ -155,9 +173,13 @@ function setHeaderForUser() {
         }
     });
 }
-
 $(document).ready(function () {
     setHeaderForUser();
+
+
+
+
+
     $(".button.logout").click(function () {
         localStorage.jwt = "";
         window.location.href = "login.html";

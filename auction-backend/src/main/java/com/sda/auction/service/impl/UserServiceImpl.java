@@ -20,18 +20,17 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private SecurityService securityService;
-    private RoleRepository roleRepository;
+
 
     @Autowired
     public UserServiceImpl(UserMapper userMapper,
                            UserRepository userRepository,
                            BCryptPasswordEncoder passwordEncoder,
-                           SecurityService securityService, RoleRepository roleRepository) {
+                           SecurityService securityService) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
-        this.roleRepository = roleRepository;
     }
 
 
@@ -42,7 +41,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.convert(userDto);
 
         encodePassword(user);
-        addUserRoles(user);
+        securityService.addUserRoles(user);
 
         //persistam in baza de date
         User savedUser = userRepository.save(user);
@@ -51,13 +50,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.convert(savedUser);
     }
 
-    private void addUserRoles(User user) {
-        Role role = roleRepository.findByRoleName("user");
-        user.addRole(role);
-
-        Role admin = roleRepository.findByRoleName("admin");
-        user.addRole(admin);
-    }
 
     @Override
     public User findByEmail(String email) {

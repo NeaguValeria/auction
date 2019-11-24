@@ -19,4 +19,7 @@ public interface SecurityService {
     void setEmailOn(ServletRequest servletRequest);
 
     HeaderDto getHeaderDtoFrom(HttpServletRequest request);
+
+
+    void addUserRoles(User user);
 }

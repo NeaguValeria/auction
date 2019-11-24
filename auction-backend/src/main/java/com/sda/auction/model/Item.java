@@ -1,5 +1,7 @@
 package com.sda.auction.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,16 +18,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name = "item")
 @Data
+@EqualsAndHashCode(exclude = "user")
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
-    private int id;
+    private int itemId;
 
     @Column
     private String name;
@@ -45,10 +50,16 @@ public class Item {
     @Column
     private String photo;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User owner;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+
     private Set<Bid> bids = new HashSet<>();
+
+    public String getOwnersName() {
+        return owner.getFriendlyName();
+    }
 }
