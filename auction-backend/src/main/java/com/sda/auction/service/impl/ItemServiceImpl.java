@@ -45,7 +45,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto findById(Integer id) {
-        return null;
+        Optional<Item> optionalItem= itemRepository.findById(id);
+        if(!optionalItem.isPresent()){
+            throw new RuntimeException("Item with id " + id + " does not exist!");
+        }
+        Item item =optionalItem.get();
+        return itemMapper.convert(item);
     }
 
     @Override
