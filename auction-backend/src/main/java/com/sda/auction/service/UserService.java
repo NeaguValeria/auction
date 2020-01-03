@@ -6,7 +6,7 @@ import com.sda.auction.model.User;
 
 public interface UserService {
 
-    UserDto addUser (UserDto userDto);
+    UserDto addUser(UserDto userDto);
 
     User findByEmail(String email);
 

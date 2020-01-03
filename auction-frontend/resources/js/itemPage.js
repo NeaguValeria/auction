@@ -13,22 +13,17 @@ function loadImageAsBase64() {
     reader.readAsDataURL(file);
 }
 
+function createAuthorizationHeader() {
+    const jwt = localStorage.jwt;
+    if (jwt) {
+        return { "Authorization": "Bearer " + jwt };
+    } else {
+        return {};
+    }
+}
+
 function handleError(jqXhr) {
     console.log(jqXhr);
-    // const errorsArray = jqXhr.responseJSON.errors;
-    //
-    // if (errorsArray != undefined) {
-    //   for (var index = 0; index < errorsArray.length; index++) {
-    //     const element = $("#" + errorsArray[index].field);
-    //     if (!$(element).next().hasClass("error")) {
-    //       const errorLine = errorLineStart + errorsArray[index].defaultMessage + errorLineEnd;
-    //       $(errorLine).insertAfter(element);
-    //     }
-    //   }
-    // } else {
-    //   const errorMessage = jqXhr.responseJSON.message;
-    //   console.log("singura eroare: " + errorMessage);
-    // }
 }
 
 function handleSuccess(data) {
@@ -38,15 +33,6 @@ function handleSuccess(data) {
     var successElement = $("form#addItem_form .addSuccessful");
     $(successElement).append(successLine);
     $("input").val("");
-}
-
-function createAuthorizationHeader() {
-    const jwt = localStorage.jwt;
-    if (jwt) {
-        return { "Authorization": "Bearer " + jwt };
-    } else {
-        return {};
-    }
 }
 
 function addItem() {
@@ -146,12 +132,49 @@ function addItemOnPage(itemDto) {
     $(".itemList").append(newItem);
 }
 
-function getAllItems(isAdmin) {
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+};
+
+function displayItemForAdmin(itemDto) {
+    $(".itemName").html(itemDto.name);
+    $(".itemCategory").html(itemDto.category);
+    $(".itemPrice").html("$" + itemDto.startingPrice);
+    $(".itemImage").attr("src", itemDto.photo);
+    $(".itemDescription").html(itemDto.description);
+    $(".itemStartDate").html(itemDto.startDate);
+    $(".itemEndDate").html(itemDto.endDate);
+    $(".itemOwner").html(itemDto.owner);
+}
+
+function displayItemForUser(itemDto) {
+    $(".itemName").html(itemDto.name);
+    $(".itemCategory").html(itemDto.category);
+    $(".itemPrice").html("$" + itemDto.startingPrice);
+    $(".itemImage").attr("src", itemDto.photo);
+    $(".itemDescription").html(itemDto.description);
+    $(".itemStartDate").html(itemDto.startDate);
+    $(".itemEndDate").html(itemDto.endDate);
+}
+
+function getItemById(isAdmin) {
     let url = "";
+    const itemId = getUrlParameter("id");
     if (isAdmin) {
-        url = 'http://localhost:8080/api/admin/item';
+        url = 'http://localhost:8080/api/admin/item/' + itemId;
     } else {
-        url = 'http://localhost:8080/api/user/item'
+        url = 'http://localhost:8080/api/user/item/' + itemId;
     }
     $.ajax({
         url: url,
@@ -159,15 +182,28 @@ function getAllItems(isAdmin) {
         headers: createAuthorizationHeader(),
         type: 'get',
         contentType: 'application/json',
-        success: function (itemList, textStatus, jQxhr) {
-            console.log(itemList);
-            itemList.forEach(addItemOnPage);
-
+        success: function (itemDto, textStatus, jQxhr) {
+            if (isAdmin) {
+                displayItemForAdmin(itemDto);
+            } else {
+                console.log(itemDto);
+                displayItemForUser(itemDto);
+            }
+            displayAccordingToRole(isAdmin);
         },
         error: function (jqXhr, textStatus, errorThrown) {
             console.log(jqXhr);
         }
-    });
+    })
+    ;
+}
+
+function displayAccordingToRole(isAdmin) {
+    if (isAdmin) {
+        $(".adminOnly").show();
+    } else {
+        $(".userOnly").show();
+    }
 }
 
 function setHeaderForUser() {
@@ -180,14 +216,8 @@ function setHeaderForUser() {
         success: function (headerDto, textStatus, jQxhr) {
             console.log(headerDto);
             $(".helloMessage").text("Hello, " + headerDto.firstName + "!");
-            if (headerDto.admin) {
-                $("li.nav-item.adminOnly").show();
-
-            } else {
-                $("li.nav-item.userOnly").show();
-
-            }
-            getAllItems(headerDto.admin);
+            displayAccordingToRole(headerDto.admin);
+            getItemById(headerDto.admin);
         },
         error: function (jqXhr, textStatus, errorThrown) {
             console.log(jqXhr);
@@ -202,7 +232,54 @@ function addLogout() {
     });
 }
 
+function setHeaderForUser() {
+    $.ajax({
+        url: 'http://localhost:8080/api/authenticated/details',
+        dataType: 'json',
+        headers: createAuthorizationHeader(),
+        type: 'get',
+        contentType: 'application/json',
+        success: function (headerDto, textStatus, jQxhr) {
+            console.log(headerDto);
+            $(".helloMessage").text("Hello, " + headerDto.firstName + "!");
+            displayAccordingToRole(headerDto.admin);
+            getItemById(headerDto.admin);
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            console.log(jqXhr);
+        }
+    });
+}
+
+function addBid() {
+
+    const itemId = getUrlParameter("id");
+    const price = $(".bidArea input").val();
+
+    const bidDto = JSON.stringify({
+        price, itemId
+    });
+    $.ajax({
+        url: 'http://localhost:8080/api/user/bid',
+        dataType: 'json',
+        headers: createAuthorizationHeader(),
+        type: 'post',
+        contentType: 'application/json',
+        data: bidDto,
+        success: function (data, textStatus, jQxhr) {
+            $(".addSuccessful").removeClass("error").html("Your bid has been placed");
+            getItemById(false);
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            $(".addSuccessful").addClass("error").html("Your bid has not been placed! An error occured.");
+        }
+    });
+}
+
 $(document).ready(function () {
     setHeaderForUser();
     addLogout();
+    $(".bidArea .button.primary-btn").click(function () {
+        addBid();
+    });
 });

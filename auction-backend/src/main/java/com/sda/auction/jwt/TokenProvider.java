@@ -58,7 +58,6 @@ public class TokenProvider implements InitializingBean {
         if (!optionalClaims.isPresent()) {
             return false;
         }
-
         Claims claims = optionalClaims.get();
         return isAuthoriezed(claims, requestURL);
     }

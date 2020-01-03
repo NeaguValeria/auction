@@ -30,9 +30,6 @@ function login() {
                         $(errorLine).insertAfter(element);
 
                     }
-
-                    // console.log("error " + index + "-> " + errorsArray[index].field + ":"
-                    //     + errorsArray[index].defaultMessage);
                 }
             } else {
                 const errorMessage = jqXhr.responseJSON.message;
@@ -51,8 +48,35 @@ function login() {
     });
 
 }
+function createAuthorizationHeader() {
+    const jwt = localStorage.jwt;
+    if (jwt) {
+        return { "Authorization": "Bearer " + jwt };
+    } else {
+        return {};
+    }
+}
 
+function setHeaderForUser() {
+    $.ajax({
+        url: 'http://localhost:8080/api/authenticated/details',
+        dataType: 'json',
+        headers: createAuthorizationHeader(),
+        type: 'get',
+        contentType: 'application/json',
+        success: function (headerDto, textStatus, jQxhr) {
+            console.log(headerDto);
+            $(".helloMessage").text("Hello, " + headerDto.firstName + "!");
+            displayAccordingToRole(headerDto.admin);
+            getItemById(headerDto.admin);
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            console.log(jqXhr);
+        }
+    });
+}
 $(document).ready(function () {
+    setHeaderForUser();
     $("form#login_form button").click(function () {
         login();
     });

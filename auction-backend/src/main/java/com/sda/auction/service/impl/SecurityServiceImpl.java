@@ -70,16 +70,6 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
 
-    //	"Bearer adsadsafisafsakjskjdsa.sadjsaksaksajk.sakjddsakdsakdsa"
-    private String resolveToken(HttpServletRequest httpServletRequest) {
-        String bearerToken = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-
-    }
-
     private boolean isPublicPath(String requestURL) {
         String[] publicPathsArray = publicPaths.split(",");
         for (String path : publicPathsArray) {
@@ -124,4 +114,14 @@ public class SecurityServiceImpl implements SecurityService {
         user.addRole(role);
     }
 
+
+    //	"Bearer adsadsafisafsakjskjdsa.sadjsaksaksajk.sakjddsakdsakdsa"
+    private String resolveToken(HttpServletRequest httpServletRequest) {
+        String bearerToken = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+
+    }
 }

@@ -1,8 +1,9 @@
 package com.sda.auction.controller;
 
+import com.sda.auction.dto.BidDto;
 import com.sda.auction.dto.ItemDto;
+import com.sda.auction.service.BidService;
 import com.sda.auction.service.ItemService;
-import java.text.ParseException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -17,27 +18,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/user/item")
-public class UserItemController {
+@RequestMapping("/api/user/bid")
+public class BidItemController {
+
 
     @Autowired
-    private ItemService itemService;
+    private BidService bidService;
 
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<BidDto> newBid(@Valid @RequestBody BidDto bidDto,
+                                         HttpServletRequest request) {
+        String userEmail = (String) request.getAttribute("userEmail");
 
-    @GetMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<List<ItemDto>> get() {
-        List<ItemDto> result = itemService.findAllForBidding();
+        BidDto result = bidService.addBid(bidDto, userEmail);
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ItemDto> getById(@PathVariable Integer id, HttpServletRequest request) {
-        System.out.println("Item id  = " + id);
-        String userEmail = (String) request.getAttribute("userEmail");
-        ItemDto itemDto = itemService.findByIdForUser(id, userEmail);
-        return new ResponseEntity<>(itemDto, HttpStatus.OK);
-    }
-
-
 }
+

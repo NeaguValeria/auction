@@ -24,7 +24,7 @@ public class UserMapper {
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
 
-        userDto.setId(user.getId());
+        userDto.setId(user.getUserId());
 
         return userDto;
     }

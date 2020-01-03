@@ -62,7 +62,7 @@ function register() {
 
 function validateUsername(element){
     var firstName = $(element).val();
-    if(firstName.length<6){
+    if(firstName.length<3){
         if (! $(element).next().hasClass("error")) {
             const errorLine = errorLineStart + "First name not valid" + errorLineEnd;
             $(errorLine).insertAfter(element);
